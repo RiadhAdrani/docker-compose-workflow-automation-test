@@ -1,6 +1,27 @@
 version: '3.9'
 
 services:
+  db:
+    image: postgres:16.1-alpine
+    container_name: gh-test-db
+    network_mode: host
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    ports:
+      - '5432:5432'
+    volumes:
+      - gh-test-db:/var/lib/postgresql/data
+  init-db:
+    image: node:20
+    container_name: gh-test-init-db
+    network_mode: host
+    volumes:
+      - ./:/usr/src/app/
+    command: ['yarn', 'init-db']
+    depends_on:
+      - db
   api:
     network_mode: host
     container_name: gh-test-api
@@ -9,5 +30,10 @@ services:
     volumes:
       - ./:/usr/src/app/
     command: ['yarn', 'dev']
+    depends_on:
+      - db
     ports:
       - '3000:3000'
+
+volumes:
+  gh-test-db:
