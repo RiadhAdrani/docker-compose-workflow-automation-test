@@ -19,7 +19,7 @@ services:
     network_mode: host
     volumes:
       - ./:/usr/src/app/
-    command: ['yarn', 'init-db']
+    command: ['npx prisma generate && npx prisma migrate deploy']
     depends_on:
       - db
   api:
