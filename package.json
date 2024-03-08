@@ -2,7 +2,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "test": "vitest",
-    "init-db": "npx prisma migrate deploy"
+    "init-db": "npx prisma generate && npx prisma migrate deploy"
   },
   "type": "module",
   "dependencies": {
