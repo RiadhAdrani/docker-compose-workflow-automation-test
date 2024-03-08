@@ -37,11 +37,6 @@ jobs:
       - name: Wait for Docker Compose service to be ready
         run: sleep 15
 
-      # Migrate Database ------------------------------------------------------
-
-      - name: Migrate Database
-        run: npx prisma migrate dev
-
       # ping Server -----------------------------------------------------------
 
       - name: Ping server

@@ -13,15 +13,20 @@ services:
       - '5432:5432'
     volumes:
       - gh-test-db:/var/lib/postgresql/data
-  init-db:
-    image: node:20
-    container_name: gh-test-init-db
+
+  db-init:
     network_mode: host
+    container_name: gh-test-db-init
+    image: node:20
+    working_dir: /usr/src/app/
     volumes:
       - ./:/usr/src/app/
-    command: ['npx prisma generate && npx prisma migrate deploy']
+    command: ['yarn', 'setup']
     depends_on:
       - db
+    ports:
+      - '3000:3000'
+
   api:
     network_mode: host
     container_name: gh-test-api
@@ -31,8 +36,7 @@ services:
       - ./:/usr/src/app/
     command: ['yarn', 'dev']
     depends_on:
-      - db
-      - init-db
+      - db-init
     ports:
       - '3000:3000'
 
