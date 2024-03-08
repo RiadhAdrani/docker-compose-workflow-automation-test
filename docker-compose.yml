@@ -14,19 +14,6 @@ services:
     volumes:
       - gh-test-db:/var/lib/postgresql/data
 
-  db-init:
-    network_mode: host
-    container_name: gh-test-db-init
-    image: node:20
-    working_dir: /usr/src/app/
-    volumes:
-      - ./:/usr/src/app/
-    command: ['yarn', 'setup']
-    depends_on:
-      - db
-    ports:
-      - '3000:3000'
-
   api:
     network_mode: host
     container_name: gh-test-api
@@ -34,9 +21,9 @@ services:
     working_dir: /usr/src/app/
     volumes:
       - ./:/usr/src/app/
-    command: ['yarn', 'dev']
+    command: ['yarn', 'start-ci']
     depends_on:
-      - db-init
+      - db
     ports:
       - '3000:3000'
 
